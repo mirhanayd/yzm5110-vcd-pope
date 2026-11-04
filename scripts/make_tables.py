@@ -27,6 +27,7 @@ from collections import defaultdict
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 RUNS = os.path.join(ROOT, "results", "runs")
 OUT = os.path.join(ROOT, "results", "tables")
+PREFIX = ""
 
 
 def correct(rec):
@@ -83,7 +84,7 @@ def load_runs():
             print(f"skip incomplete run {os.path.basename(d)} ({len(recs)}/{meta['n_questions']})")
             continue
         name = os.path.basename(d)
-        config = re.sub(r"_s\d+(_n\d+)?$", "", name)  # strip seed
+        config = re.sub(r"_s\d+(?=(_n\d+)?$)", "", name)  # strip seed, keep the _n<limit> suffix
         runs.append(dict(name=name, config=config, meta=meta, recs=recs, seed=meta["args"]["seed"]))
     return runs
 
@@ -94,6 +95,7 @@ def fmt(xs):
 
 def write(name, header, rows):
     os.makedirs(OUT, exist_ok=True)
+    name = PREFIX + name
     with open(os.path.join(OUT, name + ".csv"), "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(header)
@@ -106,13 +108,20 @@ def write(name, header, rows):
 
 
 def main():
+    global RUNS, PREFIX
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--runs-dir", default=RUNS)
+    ap.add_argument("--prefix", default="", help="prefix for output table names, e.g. timing_")
+    args = ap.parse_args()
+    RUNS, PREFIX = args.runs_dir, args.prefix
     runs = load_runs()
     groups = defaultdict(list)
     for r in runs:
         groups[r["config"]].append(r)
 
     header = ["config", "seeds", "accuracy", "precision", "recall", "F1", "F1 95% CI", "yes %",
-              "latency ms/q", "noisy fwd/q", "noisy prefill/q", "skip rate %", "peak GB"]
+              "latency ms/q (mean)", "latency ms/q (median)", "GPU shared", "noisy fwd/q", "noisy prefill/q", "skip rate %", "peak GB"]
     rows = []
     for cfg, rs in sorted(groups.items()):
         rs.sort(key=lambda r: r["seed"])
@@ -123,6 +132,8 @@ def main():
             fmt([x["recall"] for x in m]), fmt([x["f1"] for x in m]), f"[{lo:.2f}, {hi:.2f}]",
             fmt([x["yes_ratio"] for x in m]),
             fmt([1000 * r["meta"]["mean_latency_s"] for r in rs]),
+            fmt([1000 * r["meta"].get("median_latency_s", r["meta"]["mean_latency_s"]) for r in rs]),
+            "yes" if any(r["meta"].get("concurrent_jobs", 1) > 1 for r in rs) else "no",
             f"{stats.mean(r['meta']['noisy_forwards_per_q'] for r in rs):.3f}",
             f"{stats.mean(r['meta']['noisy_prefills_per_q'] for r in rs):.3f}",
             f"{100 * stats.mean(r['meta']['skip_rate_steps'] for r in rs):.1f}",

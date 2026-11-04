@@ -23,7 +23,8 @@ src/vcdpope/model.py      LLaVA-1.5 (HF port) loading, prompt and tokenization i
 src/vcdpope/decoding.py   token-by-token decoding: regular, greedy, VCD, APC-only, gated VCD
 src/vcdpope/pope.py       POPE metrics (official substring scorer + strict first-word scorer)
 scripts/run_pope.py       one run = one (split, decoding mode, seed); resumable; writes results/runs/<name>/
-scripts/experiments.sh    the exact commands of every reported run (phases: smoke, repro, dev, test, tables)
+scripts/experiments.sh    the exact commands of every reported run (phases: smoke, phase1, phase2, tables)
+scripts/run_many.py       runs a job list with N workers sharing one GPU, loading the model once per worker
 scripts/pick_tau.py       chooses the gate threshold on the dev split only
 scripts/make_tables.py    builds results/tables/*.md|csv from the saved runs
 scripts/check_tokenizer.py  verifies our prompt token ids == original LLaVA tokenizer ids
@@ -47,12 +48,14 @@ On Colab, open `notebooks/colab_run.ipynb`.
 ## Reproducing the reported numbers
 
 ```bash
-bash scripts/experiments.sh smoke     # 100 questions, measures speed
-bash scripts/experiments.sh repro     # Phase 1: Regular / VCD / APC-only × 3 seeds, greedy / VCD-greedy × 1, COCO random|popular|adversarial
-bash scripts/experiments.sh dev       # Phase 2a: gate threshold on A-OKVQA POPE (images disjoint from COCO)
-TAU=... SKIP=... bash scripts/experiments.sh test   # Phase 2b: lossless / margin / random gate on COCO
+bash scripts/experiments.sh smoke     # 100 questions x 3 configs, checks the pipeline
+bash scripts/experiments.sh phase1    # dev gate tuning (A-OKVQA POPE, images disjoint from COCO), then
+                                      # COCO random|popular|adversarial: Regular / VCD / APC-only x 3 seeds, greedy / VCD-greedy
+TAU=... SKIP=... bash scripts/experiments.sh phase2   # lossless / margin / random gate on COCO x 3 seeds + timing runs alone on the GPU
 bash scripts/experiments.sh tables
 ```
+
+Accuracy runs use 4 models in parallel on one A100-80GB (`WORKERS=4`); their latencies are not used. Latency and memory are reported only from `results/timing/`, where one model runs alone on the GPU after untimed warm-up.
 
 Every run directory contains `answers.jsonl` (answer, latency, forward-pass counts, first-step logits per question) and `meta.json` (all arguments, git revision, HF model revision, library versions, GPU, peak memory, wall time, metrics).
 
