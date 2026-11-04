@@ -23,7 +23,10 @@ import subprocess
 import sys
 import time
 
-import torch
+os.environ.setdefault("USE_TF", "0")  # Colab ships TensorFlow; keep transformers from importing it
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
+
+import torch  # noqa: E402
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
 from vcdpope.decoding import GATES, MODES, DecodeConfig, decode  # noqa: E402
@@ -60,7 +63,7 @@ def run_name(a):
     return name + f"_s{a.seed}" + (f"_n{a.limit}" if a.limit else "")
 
 
-def main():
+def parse_args(argv=None):
     p = argparse.ArgumentParser()
     p.add_argument("--dataset", default="coco", choices=["coco", "aokvqa", "gqa"])
     p.add_argument("--split", default="random", choices=["random", "popular", "adversarial"])
@@ -83,7 +86,12 @@ def main():
                    help="POPE file whose images are removed from this split (keeps dev and test images disjoint)")
     p.add_argument("--out-dir", default=os.path.join(ROOT, "results", "runs"))
     p.add_argument("--name", default=None)
-    a = p.parse_args()
+    p.add_argument("--warmup", type=int, default=3, help="untimed warm-up decodes before the run")
+    return p.parse_args(argv)
+
+
+def run(a, lm=None):
+    """Run one configuration. `lm` lets scripts/run_many.py reuse a loaded model across runs."""
 
     qfile = a.question_file or os.path.join(ROOT, "data", "pope", a.dataset, f"{a.dataset}_pope_{a.split}.json")
     ifolder = a.image_folder or os.path.join(ROOT, "data", "images", "gqa" if a.dataset == "gqa" else "coco_val2014")
@@ -105,11 +113,14 @@ def main():
                     r = json.loads(line)
                     done[r["question_id"]] = r
     todo = [q for q in questions if q["question_id"] not in done]
-    print(f"[run] {out}: {len(done)} done, {len(todo)} to go")
+    print(f"[run] {out}: {len(done)} done, {len(todo)} to go", flush=True)
+    if not todo and os.path.exists(os.path.join(out, "meta.json")):
+        return lm
 
     cfg = DecodeConfig(mode=a.mode, alpha=a.alpha, beta=a.beta, max_new_tokens=a.max_new_tokens, gate=a.gate,
                        tau=a.tau, skip_prob=a.skip_prob)
-    lm = load_llava(a.model_id, a.dtype, a.load_in_4bit)
+    if lm is None:
+        lm = load_llava(a.model_id, a.dtype, a.load_in_4bit)
     tok = lm.tokenizer
     cfg.eos_token_id = tok.eos_token_id
     yes_no = (tok("Yes").input_ids[-1], tok("No").input_ids[-1])  # "▁Yes", "▁No" as emitted after "ASSISTANT:"
@@ -117,17 +128,32 @@ def main():
     if cuda:
         torch.cuda.reset_peak_memory_stats()
 
+    def prepare(q):
+        qid = q["question_id"]
+        torch.manual_seed(a.seed * 1_000_003 + qid)  # seeds CPU (noise) and CUDA (sampling) RNGs
+        gate_rng = random.Random(a.seed * 7_919 + qid)
+        input_ids = tokenize_with_image(build_prompt(q["text"]), lm).to(lm.device)
+        pix = preprocess_image(os.path.join(ifolder, q["image"]), lm)
+        pix_cd = add_diffusion_noise(pix, a.noise_step)  # always drawn, so RNG streams match across modes
+        pix = pix.to(lm.device, lm.dtype)
+        pix_cd = pix_cd.to(lm.device, lm.dtype) if cfg.contrastive else None
+        return input_ids, pix, pix_cd, gate_rng
+
+    # Warm-up (not recorded): CUDA context, kernel selection and allocator caches otherwise inflate
+    # the latency of the first questions of every run. Uses the ungated config so both branches run.
+    if todo and a.warmup > 0:
+        wcfg = DecodeConfig(**{**cfg.__dict__, "gate": "none", "max_new_tokens": 2})
+        for _ in range(a.warmup):
+            w_ids, w_pix, w_pix_cd, w_rng = prepare(todo[0])
+            decode(lm.model, w_ids, w_pix, w_pix_cd, wcfg, w_rng)
+        if cuda:
+            torch.cuda.synchronize()
+
     t_run = time.perf_counter()
     with open(ans_path, "a") as fout:
         for i, q in enumerate(todo):
             qid = q["question_id"]
-            torch.manual_seed(a.seed * 1_000_003 + qid)  # seeds CPU (noise) and CUDA (sampling) RNGs
-            gate_rng = random.Random(a.seed * 7_919 + qid)
-            input_ids = tokenize_with_image(build_prompt(q["text"]), lm).to(lm.device)
-            pix = preprocess_image(os.path.join(ifolder, q["image"]), lm)
-            pix_cd = add_diffusion_noise(pix, a.noise_step)  # always drawn, so RNG streams match across modes
-            pix = pix.to(lm.device, lm.dtype)
-            pix_cd = pix_cd.to(lm.device, lm.dtype) if cfg.contrastive else None
+            input_ids, pix, pix_cd, gate_rng = prepare(q)
             if cuda:
                 torch.cuda.synchronize()
             t0 = time.perf_counter()
@@ -144,11 +170,11 @@ def main():
             fout.flush()
             done[qid] = rec
             if (i + 1) % 100 == 0:
-                print(f"[run] {i + 1}/{len(todo)}  last={text!r}  {dt:.3f}s")
+                print(f"[run] {i + 1}/{len(todo)}  last={text!r}  {dt:.3f}s", flush=True)
     wall = time.perf_counter() - t_run
 
     answers = {qid: r["text"] for qid, r in done.items()}
-    lat = [r["latency_s"] for r in done.values()]
+    lat = sorted(r["latency_s"] for r in done.values())
     meta = dict(
         args=vars(a), question_file=qfile, n_questions=len(questions), git_revision=git_rev(),
         model_revision=getattr(lm.model.config, "_commit_hash", None),
@@ -158,6 +184,9 @@ def main():
         peak_memory_gb=round(torch.cuda.max_memory_allocated() / 1e9, 3) if cuda else None,
         wall_time_s_this_session=round(wall, 1), n_new_this_session=len(todo),
         mean_latency_s=round(sum(lat) / len(lat), 5) if lat else None,
+        median_latency_s=lat[len(lat) // 2] if lat else None,
+        p90_latency_s=lat[int(0.9 * (len(lat) - 1))] if lat else None,
+        concurrent_jobs=int(os.environ.get("VCDPOPE_CONCURRENT", "1")),  # >1: latency measured while sharing the GPU
         noisy_forwards_per_q=round(sum(r["noisy_forwards"] for r in done.values()) / len(done), 4),
         noisy_prefills_per_q=round(sum(r["noisy_prefills"] for r in done.values()) / len(done), 4),
         skip_rate_steps=round(sum(r["skipped_steps"] for r in done.values()) / max(1, sum(r["steps"] for r in done.values())), 4),
@@ -170,7 +199,13 @@ def main():
         meta["previous_sessions"] = json.load(open(meta_path)).get("previous_sessions", []) + [
             {k: v for k, v in json.load(open(meta_path)).items() if k in ("gpu", "peak_memory_gb", "wall_time_s_this_session")}]
     json.dump(meta, open(meta_path, "w"), indent=2)
-    print(json.dumps(meta["metrics_official"]), f"peak_mem={meta['peak_memory_gb']}GB", f"mean_lat={meta['mean_latency_s']}s")
+    print(json.dumps(meta["metrics_official"]), f"peak_mem={meta['peak_memory_gb']}GB", f"mean_lat={meta['mean_latency_s']}s",
+          flush=True)
+    return lm
+
+
+def main(argv=None):
+    run(parse_args(argv))
 
 
 if __name__ == "__main__":
