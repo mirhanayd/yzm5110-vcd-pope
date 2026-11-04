@@ -1,0 +1,11 @@
+# Tested with Python 3.10-3.13. Pin torch to the version preinstalled on your GPU machine/Colab.
+torch>=2.1
+transformers==4.51.3
+accelerate>=0.30
+sentencepiece
+protobuf
+pillow
+numpy
+pytest
+# optional, only for --load-in-4bit:
+# bitsandbytes>=0.43
