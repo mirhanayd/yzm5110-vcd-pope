@@ -3,6 +3,7 @@
 #   bash scripts/experiments.sh smoke                    # 100 questions x 3 configs
 #   bash scripts/experiments.sh phase1                   # reproduction + controls (COCO) and gate tuning (dev)
 #   TAU=.. SKIP=.. bash scripts/experiments.sh phase2    # improvement on COCO + clean timing runs
+#   TAU=.. SKIP=.. bash scripts/experiments.sh all     # everything in one session (used for the report)
 #   bash scripts/experiments.sh tables
 # WORKERS (default 4) = models sharing the GPU in parallel (A100 80GB: 4; L4/T4: 1).
 set -euo pipefail
@@ -15,6 +16,40 @@ TAUS="0.6 0.8 0.9 0.95"
 mkdir -p results/jobs
 
 case "${1:-}" in
+all)
+  # Single-session schedule used for the reported results (after the first phase1 outputs were lost,
+  # see results/notes/). TAU/SKIP were chosen on the dev split by pick_tau.py in that first phase1
+  # session (2 seeds; console output kept in results/notes/). Jobs are listed in priority order.
+  : "${TAU:?set TAU}"; : "${SKIP:?set SKIP}"
+  {
+    for s in $SEEDS; do for sp in $SPLITS; do                              # 1. core reproduction
+      echo "--dataset coco --split $sp --mode regular --seed $s"
+      echo "--dataset coco --split $sp --mode vcd --seed $s"
+    done; done
+    for s in $SEEDS; do for sp in $SPLITS; do                              # 2. improvement + control
+      echo "--dataset coco --split $sp --mode vcd --gate margin --tau $TAU --seed $s"
+      echo "--dataset coco --split $sp --mode vcd --gate random --skip-prob $SKIP --seed $s"
+    done; done
+    for sp in $SPLITS; do                                                  # 3. exactness + Mirage controls
+      echo "--dataset coco --split $sp --mode vcd --gate lossless --seed 1"
+      echo "--dataset coco --split $sp --mode greedy --seed 1"
+      echo "--dataset coco --split $sp --mode vcd_greedy --seed 1"
+      echo "--dataset coco --split $sp --mode apc --seed 1"
+    done
+    echo "$DEV --mode vcd --seed 1"                                        # 4. dev evidence (seed 1 re-run)
+    for t in $TAUS; do echo "$DEV --mode vcd --gate margin --tau $t --seed 1"; done
+  } > results/jobs/all.txt
+  python scripts/run_many.py results/jobs/all.txt --workers "$WORKERS"
+  T="--dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing"
+  {
+    echo "$T --mode regular"
+    echo "$T --mode vcd"
+    echo "$T --mode vcd --gate lossless"
+    echo "$T --mode vcd --gate margin --tau $TAU"
+    echo "$T --mode vcd --gate random --skip-prob $SKIP"
+  } > results/jobs/timing.txt
+  python scripts/run_many.py results/jobs/timing.txt --workers 1
+  ;;
 smoke)
   {
     echo "--dataset coco --split random --mode regular --limit 100"
@@ -71,5 +106,5 @@ tables)
   python scripts/make_tables.py
   python scripts/make_tables.py --runs-dir results/timing --prefix timing_
   ;;
-*) echo "usage: $0 smoke|phase1|phase2|tables"; exit 1;;
+*) echo "usage: $0 all|smoke|phase1|phase2|tables"; exit 1;;
 esac
