@@ -78,7 +78,10 @@ def load_runs():
         recs = {}
         for line in open(os.path.join(d, "answers.jsonl")):
             if line.strip():
-                r = json.loads(line)
+                try:
+                    r = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
                 recs[r["question_id"]] = r
         if len(recs) < meta["n_questions"]:
             print(f"skip incomplete run {os.path.basename(d)} ({len(recs)}/{meta['n_questions']})")
