@@ -107,11 +107,23 @@ def run(a, lm=None):
     ans_path = os.path.join(out, "answers.jsonl")
     done = {}
     if os.path.exists(ans_path):
+        # A runtime killed mid-write can leave a truncated last line: keep only complete records
+        # and rewrite the file, so appending continues from a clean state.
+        good, bad = [], 0
         with open(ans_path) as f:
             for line in f:
-                if line.strip():
+                if not line.strip():
+                    continue
+                try:
                     r = json.loads(line)
                     done[r["question_id"]] = r
+                    good.append(line if line.endswith("\n") else line + "\n")
+                except (json.JSONDecodeError, KeyError):
+                    bad += 1
+        if bad:
+            print(f"[run] dropped {bad} incomplete line(s) in {ans_path}", flush=True)
+            with open(ans_path, "w") as f:
+                f.writelines(good)
     todo = [q for q in questions if q["question_id"] not in done]
     print(f"[run] {out}: {len(done)} done, {len(todo)} to go", flush=True)
     if not todo and os.path.exists(os.path.join(out, "meta.json")):
