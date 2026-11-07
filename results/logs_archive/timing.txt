@@ -1,0 +1,5 @@
+--dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode regular
+--dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd
+--dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd --gate lossless
+--dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd --gate margin --tau 0.6
+--dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd --gate random --skip-prob 0.9581
