@@ -1,0 +1,66 @@
+[worker 0] job 1/5: --dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode regular
+[run] results/timing/coco_random_regular_s1_n1000: 0 done, 1000 to go
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 33.88it/s]
+[run] 100/1000  last='No'  0.096s
+[run] 200/1000  last='No'  0.096s
+[run] 300/1000  last='No'  0.095s
+[run] 400/1000  last='No'  0.094s
+[run] 500/1000  last='No'  0.095s
+[run] 600/1000  last='No'  0.094s
+[run] 700/1000  last='No'  0.096s
+[run] 800/1000  last='No'  0.096s
+[run] 900/1000  last='No'  0.095s
+[run] 1000/1000  last='No'  0.094s
+{"accuracy": 83.6, "precision": 92.86, "recall": 72.8, "f1": 81.61, "yes_ratio": 39.2, "n": 1000} peak_mem=14.54GB mean_lat=0.09535s
+[worker 0] job 2/5: --dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd
+[run] results/timing/coco_random_vcd_s1_n1000: 0 done, 1000 to go
+[run] 100/1000  last='No'  0.190s
+[run] 200/1000  last='No'  0.190s
+[run] 300/1000  last='No'  0.192s
+[run] 400/1000  last='No'  0.188s
+[run] 500/1000  last='No'  0.190s
+[run] 600/1000  last='No'  0.191s
+[run] 700/1000  last='No'  0.189s
+[run] 800/1000  last='No'  0.192s
+[run] 900/1000  last='No'  0.197s
+[run] 1000/1000  last='No'  0.190s
+{"accuracy": 84.8, "precision": 93.72, "recall": 74.6, "f1": 83.07, "yes_ratio": 39.8, "n": 1000} peak_mem=14.876GB mean_lat=0.19074s
+[worker 0] job 3/5: --dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd --gate lossless
+[run] results/timing/coco_random_vcd_lossless_s1_n1000: 0 done, 1000 to go
+[run] 100/1000  last='No'  0.098s
+[run] 200/1000  last='No'  0.096s
+[run] 300/1000  last='No'  0.096s
+[run] 400/1000  last='No'  0.096s
+[run] 500/1000  last='No'  0.096s
+[run] 600/1000  last='No'  0.096s
+[run] 700/1000  last='No'  0.096s
+[run] 800/1000  last='No'  0.095s
+[run] 900/1000  last='No'  0.097s
+[run] 1000/1000  last='No'  0.096s
+{"accuracy": 84.8, "precision": 93.72, "recall": 74.6, "f1": 83.07, "yes_ratio": 39.8, "n": 1000} peak_mem=14.876GB mean_lat=0.11454s
+[worker 0] job 4/5: --dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd --gate margin --tau 0.6
+[run] results/timing/coco_random_vcd_margin0.6_s1_n1000: 0 done, 1000 to go
+[run] 100/1000  last='No'  0.097s
+[run] 200/1000  last='No'  0.095s
+[run] 300/1000  last='No'  0.095s
+[run] 400/1000  last='No'  0.096s
+[run] 500/1000  last='No'  0.105s
+[run] 600/1000  last='No'  0.097s
+[run] 700/1000  last='No'  0.096s
+[run] 800/1000  last='No'  0.095s
+[run] 900/1000  last='No'  0.096s
+[run] 1000/1000  last='No'  0.096s
+{"accuracy": 84.4, "precision": 94.56, "recall": 73.0, "f1": 82.39, "yes_ratio": 38.6, "n": 1000} peak_mem=14.876GB mean_lat=0.0988s
+[worker 0] job 5/5: --dataset coco --split random --seed 1 --limit 1000 --out-dir results/timing --mode vcd --gate random --skip-prob 0.9581
+[run] results/timing/coco_random_vcd_random0.9581_s1_n1000: 0 done, 1000 to go
+[run] 100/1000  last='No'  0.160s
+[run] 200/1000  last='No'  0.158s
+[run] 300/1000  last='No'  0.095s
+[run] 400/1000  last='No'  0.095s
+[run] 500/1000  last='No'  0.095s
+[run] 600/1000  last='No'  0.095s
+[run] 700/1000  last='No'  0.096s
+[run] 800/1000  last='No'  0.096s
+[run] 900/1000  last='No'  0.096s
+[run] 1000/1000  last='No'  0.096s
+{"accuracy": 84.8, "precision": 95.08, "recall": 73.4, "f1": 82.84, "yes_ratio": 38.6, "n": 1000} peak_mem=14.878GB mean_lat=0.10154s

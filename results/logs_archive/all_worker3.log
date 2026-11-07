@@ -1,0 +1,430 @@
+[worker 3] job 1/13: --dataset coco --split popular --mode vcd --seed 1
+[run] /content/vcd-pope/results/runs/coco_popular_vcd_s1: 0 done, 3000 to go
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:32<01:05, 32.71s/it]Fetching 3 files: 100%|██████████| 3/3 [00:32<00:00, 10.90s/it]
+Loading checkpoint shards:   0%|          | 0/3 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 3/3 [00:00<00:00, 30.38it/s]
+[run] 100/3000  last='No'  0.603s
+[run] 200/3000  last='No'  0.526s
+[run] 300/3000  last='No'  0.315s
+[run] 400/3000  last='No'  0.589s
+[run] 500/3000  last='No'  0.544s
+[run] 600/3000  last='No'  0.305s
+[run] 700/3000  last='No'  0.597s
+[run] 800/3000  last='No'  0.616s
+[run] 900/3000  last='No'  0.302s
+[run] 1000/3000  last='No'  0.576s
+[run] 1100/3000  last='No'  0.607s
+[run] 1200/3000  last='No'  0.451s
+[run] 1300/3000  last='Yes'  0.301s
+[run] 1400/3000  last='No'  0.588s
+[run] 1500/3000  last='No'  0.400s
+[run] 1600/3000  last='No'  0.410s
+[run] 1700/3000  last='No'  0.606s
+[run] 1800/3000  last='No'  0.590s
+[run] 1900/3000  last='Yes'  0.605s
+[run] 2000/3000  last='No'  0.346s
+[run] 2100/3000  last='No'  0.307s
+[run] 2200/3000  last='No'  0.310s
+[run] 2300/3000  last='No'  0.604s
+[run] 2400/3000  last='No'  0.324s
+[run] 2500/3000  last='No'  0.439s
+[run] 2600/3000  last='No'  0.603s
+[run] 2700/3000  last='No'  0.605s
+[run] 2800/3000  last='No'  0.617s
+[run] 2900/3000  last='No'  0.600s
+[run] 3000/3000  last='No'  0.609s
+{"accuracy": 83.0, "precision": 88.73, "recall": 75.6, "f1": 81.64, "yes_ratio": 42.6, "n": 3000} peak_mem=14.876GB mean_lat=0.48991s
+[worker 3] job 2/13: --dataset coco --split random --mode vcd --seed 2
+[run] /content/vcd-pope/results/runs/coco_random_vcd_s2: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.610s
+[run] 200/3000  last='No'  0.595s
+[run] 300/3000  last='No'  0.605s
+[run] 400/3000  last='No'  0.610s
+[run] 500/3000  last='No'  0.608s
+[run] 600/3000  last='No'  0.605s
+[run] 700/3000  last='No'  0.619s
+[run] 800/3000  last='No'  0.612s
+[run] 900/3000  last='No'  0.591s
+[run] 1000/3000  last='No'  0.617s
+[run] 1100/3000  last='No'  0.600s
+[run] 1200/3000  last='No'  0.607s
+[run] 1300/3000  last='No'  0.610s
+[run] 1400/3000  last='Yes'  0.601s
+[run] 1500/3000  last='No'  0.602s
+[run] 1600/3000  last='No'  0.610s
+[run] 1700/3000  last='No'  0.598s
+[run] 1800/3000  last='Yes'  0.603s
+[run] 1900/3000  last='No'  0.607s
+[run] 2000/3000  last='Yes'  0.607s
+[run] 2100/3000  last='Yes'  0.599s
+[run] 2200/3000  last='No'  0.613s
+[run] 2300/3000  last='No'  0.608s
+[run] 2400/3000  last='No'  0.602s
+[run] 2500/3000  last='No'  0.613s
+[run] 2600/3000  last='No'  0.604s
+[run] 2700/3000  last='No'  0.609s
+[run] 2800/3000  last='No'  0.612s
+[run] 2900/3000  last='No'  0.612s
+[run] 3000/3000  last='No'  0.606s
+{"accuracy": 84.53, "precision": 92.39, "recall": 75.27, "f1": 82.95, "yes_ratio": 40.73, "n": 3000} peak_mem=14.876GB mean_lat=0.60587s
+[worker 3] job 3/13: --dataset coco --split adversarial --mode vcd --seed 2
+[run] /content/vcd-pope/results/runs/coco_adversarial_vcd_s2: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.603s
+[run] 200/3000  last='No'  0.614s
+[run] 300/3000  last='No'  0.604s
+[run] 400/3000  last='No'  0.599s
+[run] 500/3000  last='No'  0.607s
+[run] 600/3000  last='No'  0.623s
+[run] 700/3000  last='No'  0.603s
+[run] 800/3000  last='No'  0.604s
+[run] 900/3000  last='No'  0.604s
+[run] 1000/3000  last='No'  0.620s
+[run] 1100/3000  last='No'  0.603s
+[run] 1200/3000  last='No'  0.595s
+[run] 1300/3000  last='Yes'  0.607s
+[run] 1400/3000  last='Yes'  0.607s
+[run] 1500/3000  last='No'  0.587s
+[run] 1600/3000  last='No'  0.594s
+[run] 1700/3000  last='No'  0.601s
+[run] 1800/3000  last='No'  0.585s
+[run] 1900/3000  last='No'  0.581s
+[run] 2000/3000  last='No'  0.618s
+[run] 2100/3000  last='No'  0.593s
+[run] 2200/3000  last='No'  0.591s
+[run] 2300/3000  last='Yes'  0.620s
+[run] 2400/3000  last='No'  0.612s
+[run] 2500/3000  last='No'  0.599s
+[run] 2600/3000  last='No'  0.596s
+[run] 2700/3000  last='No'  0.576s
+[run] 2800/3000  last='No'  0.599s
+[run] 2900/3000  last='No'  0.575s
+[run] 3000/3000  last='No'  0.595s
+{"accuracy": 79.9, "precision": 83.0, "recall": 75.2, "f1": 78.91, "yes_ratio": 45.3, "n": 3000} peak_mem=14.876GB mean_lat=0.5977s
+[worker 3] job 4/13: --dataset coco --split popular --mode vcd --seed 3
+[run] /content/vcd-pope/results/runs/coco_popular_vcd_s3: 0 done, 3000 to go
+[run] 100/3000  last='Yes'  0.582s
+[run] 200/3000  last='No'  0.594s
+[run] 300/3000  last='No'  0.601s
+[run] 400/3000  last='No'  0.599s
+[run] 500/3000  last='Yes'  0.590s
+[run] 600/3000  last='No'  0.610s
+[run] 700/3000  last='No'  0.567s
+[run] 800/3000  last='No'  0.601s
+[run] 900/3000  last='No'  0.578s
+[run] 1000/3000  last='No'  0.583s
+[run] 1100/3000  last='No'  0.575s
+[run] 1200/3000  last='No'  0.556s
+[run] 1300/3000  last='Yes'  0.579s
+[run] 1400/3000  last='No'  0.565s
+[run] 1500/3000  last='No'  0.577s
+[run] 1600/3000  last='No'  0.523s
+[run] 1700/3000  last='No'  0.589s
+[run] 1800/3000  last='No'  0.602s
+[run] 1900/3000  last='No'  0.612s
+[run] 2000/3000  last='No'  0.589s
+[run] 2100/3000  last='No'  0.570s
+[run] 2200/3000  last='No'  0.554s
+[run] 2300/3000  last='No'  0.568s
+[run] 2400/3000  last='No'  0.560s
+[run] 2500/3000  last='No'  0.590s
+[run] 2600/3000  last='No'  0.562s
+[run] 2700/3000  last='No'  0.597s
+[run] 2800/3000  last='No'  0.587s
+[run] 2900/3000  last='No'  0.578s
+[run] 3000/3000  last='No'  0.583s
+{"accuracy": 83.4, "precision": 89.2, "recall": 76.0, "f1": 82.07, "yes_ratio": 42.6, "n": 3000} peak_mem=14.876GB mean_lat=0.58215s
+[worker 3] job 5/13: --dataset coco --split random --mode vcd --gate random --skip-prob 0.9581 --seed 1
+[run] /content/vcd-pope/results/runs/coco_random_vcd_random0.9581_s1: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.549s
+[run] 200/3000  last='No'  0.487s
+[run] 300/3000  last='No'  0.313s
+[run] 400/3000  last='No'  0.308s
+[run] 500/3000  last='No'  0.325s
+[run] 600/3000  last='No'  0.299s
+[run] 700/3000  last='No'  0.306s
+[run] 800/3000  last='No'  0.311s
+[run] 900/3000  last='No'  0.294s
+[run] 1000/3000  last='No'  0.297s
+[run] 1100/3000  last='No'  0.315s
+[run] 1200/3000  last='No'  0.291s
+[run] 1300/3000  last='No'  0.300s
+[run] 1400/3000  last='No'  0.295s
+[run] 1500/3000  last='No'  0.284s
+[run] 1600/3000  last='No'  0.541s
+[run] 1700/3000  last='No'  0.301s
+[run] 1800/3000  last='No'  0.298s
+[run] 1900/3000  last='Yes'  0.296s
+[run] 2000/3000  last='Yes'  0.295s
+[run] 2100/3000  last='No'  0.296s
+[run] 2200/3000  last='No'  0.287s
+[run] 2300/3000  last='No'  0.307s
+[run] 2400/3000  last='Yes'  0.305s
+[run] 2500/3000  last='No'  0.308s
+[run] 2600/3000  last='No'  0.315s
+[run] 2700/3000  last='No'  0.299s
+[run] 2800/3000  last='No'  0.298s
+[run] 2900/3000  last='No'  0.331s
+[run] 3000/3000  last='No'  0.306s
+{"accuracy": 84.63, "precision": 94.44, "recall": 73.6, "f1": 82.73, "yes_ratio": 38.97, "n": 3000} peak_mem=14.878GB mean_lat=0.323s
+[worker 3] job 6/13: --dataset coco --split adversarial --mode vcd --gate random --skip-prob 0.9581 --seed 1
+[run] /content/vcd-pope/results/runs/coco_adversarial_vcd_random0.9581_s1: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.527s
+[run] 200/3000  last='Yes'  0.536s
+[run] 300/3000  last='No'  0.311s
+[run] 400/3000  last='No'  0.323s
+[run] 500/3000  last='No'  0.321s
+[run] 600/3000  last='No'  0.325s
+[run] 700/3000  last='No'  0.306s
+[run] 800/3000  last='No'  0.293s
+[run] 900/3000  last='No'  0.308s
+[run] 1000/3000  last='No'  0.283s
+[run] 1100/3000  last='No'  0.315s
+[run] 1200/3000  last='No'  0.296s
+[run] 1300/3000  last='No'  0.319s
+[run] 1400/3000  last='Yes'  0.331s
+[run] 1500/3000  last='No'  0.321s
+[run] 1600/3000  last='No'  0.514s
+[run] 1700/3000  last='No'  0.301s
+[run] 1800/3000  last='No'  0.305s
+[run] 1900/3000  last='No'  0.295s
+[run] 2000/3000  last='No'  0.301s
+[run] 2100/3000  last='No'  0.306s
+[run] 2200/3000  last='No'  0.282s
+[run] 2300/3000  last='Yes'  0.291s
+[run] 2400/3000  last='No'  0.266s
+[run] 2500/3000  last='No'  0.312s
+[run] 2600/3000  last='No'  0.308s
+[run] 2700/3000  last='No'  0.304s
+[run] 2800/3000  last='No'  0.292s
+[run] 2900/3000  last='No'  0.303s
+[run] 3000/3000  last='No'  0.320s
+{"accuracy": 80.03, "precision": 84.52, "recall": 73.53, "f1": 78.65, "yes_ratio": 43.5, "n": 3000} peak_mem=14.878GB mean_lat=0.32057s
+[worker 3] job 7/13: --dataset coco --split popular --mode vcd --gate random --skip-prob 0.9581 --seed 2
+[run] /content/vcd-pope/results/runs/coco_popular_vcd_random0.9581_s2: 0 done, 3000 to go
+[run] 100/3000  last='Yes'  0.312s
+[run] 200/3000  last='No'  0.522s
+[run] 300/3000  last='No'  0.301s
+[run] 400/3000  last='No'  0.312s
+[run] 500/3000  last='Yes'  0.550s
+[run] 600/3000  last='No'  0.301s
+[run] 700/3000  last='No'  0.294s
+[run] 800/3000  last='No'  0.301s
+[run] 900/3000  last='No'  0.293s
+[run] 1000/3000  last='No'  0.301s
+[run] 1100/3000  last='No'  0.298s
+[run] 1200/3000  last='No'  0.291s
+[run] 1300/3000  last='No'  0.322s
+[run] 1400/3000  last='No'  0.313s
+[run] 1500/3000  last='No'  0.298s
+[run] 1600/3000  last='No'  0.310s
+[run] 1700/3000  last='No'  0.317s
+[run] 1800/3000  last='No'  0.321s
+[run] 1900/3000  last='No'  0.320s
+[run] 2000/3000  last='No'  0.317s
+[run] 2100/3000  last='No'  0.283s
+[run] 2200/3000  last='No'  0.317s
+[run] 2300/3000  last='No'  0.328s
+[run] 2400/3000  last='No'  0.329s
+[run] 2500/3000  last='No'  0.314s
+[run] 2600/3000  last='No'  0.294s
+[run] 2700/3000  last='No'  0.313s
+[run] 2800/3000  last='No'  0.538s
+[run] 2900/3000  last='No'  0.521s
+[run] 3000/3000  last='No'  0.299s
+{"accuracy": 82.87, "precision": 90.41, "recall": 73.53, "f1": 81.1, "yes_ratio": 40.67, "n": 3000} peak_mem=14.877GB mean_lat=0.3257s
+[worker 3] job 8/13: --dataset coco --split random --mode vcd --gate random --skip-prob 0.9581 --seed 3
+[run] /content/vcd-pope/results/runs/coco_random_vcd_random0.9581_s3: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.314s
+[run] 200/3000  last='No'  0.327s
+[run] 300/3000  last='No'  0.328s
+[run] 400/3000  last='No'  0.315s
+[run] 500/3000  last='No'  0.295s
+[run] 600/3000  last='No'  0.300s
+[run] 700/3000  last='No'  0.312s
+[run] 800/3000  last='No'  0.301s
+[run] 900/3000  last='No'  0.329s
+[run] 1000/3000  last='No'  0.290s
+[run] 1100/3000  last='No'  0.308s
+[run] 1200/3000  last='No'  0.287s
+[run] 1300/3000  last='No'  0.315s
+[run] 1400/3000  last='No'  0.303s
+[run] 1500/3000  last='No'  0.303s
+[run] 1600/3000  last='No'  0.318s
+[run] 1700/3000  last='No'  0.292s
+[run] 1800/3000  last='Yes'  0.308s
+[run] 1900/3000  last='No'  0.290s
+[run] 2000/3000  last='No'  0.309s
+[run] 2100/3000  last='No'  0.310s
+[run] 2200/3000  last='No'  0.292s
+[run] 2300/3000  last='No'  0.323s
+[run] 2400/3000  last='Yes'  0.316s
+[run] 2500/3000  last='No'  0.320s
+[run] 2600/3000  last='No'  0.331s
+[run] 2700/3000  last='No'  0.302s
+[run] 2800/3000  last='No'  0.303s
+[run] 2900/3000  last='No'  0.303s
+[run] 3000/3000  last='No'  0.321s
+{"accuracy": 84.73, "precision": 94.23, "recall": 74.0, "f1": 82.9, "yes_ratio": 39.27, "n": 3000} peak_mem=14.878GB mean_lat=0.32856s
+[worker 3] job 9/13: --dataset coco --split adversarial --mode vcd --gate random --skip-prob 0.9581 --seed 3
+[run] /content/vcd-pope/results/runs/coco_adversarial_vcd_random0.9581_s3: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.301s
+[run] 200/3000  last='Yes'  0.332s
+[run] 300/3000  last='No'  0.310s
+[run] 400/3000  last='No'  0.292s
+[run] 500/3000  last='No'  0.318s
+[run] 600/3000  last='No'  0.310s
+[run] 700/3000  last='No'  0.305s
+[run] 800/3000  last='No'  0.315s
+[run] 900/3000  last='No'  0.323s
+[run] 1000/3000  last='No'  0.310s
+[run] 1100/3000  last='No'  0.311s
+[run] 1200/3000  last='No'  0.326s
+[run] 1300/3000  last='Yes'  0.314s
+[run] 1400/3000  last='No'  0.292s
+[run] 1500/3000  last='No'  0.314s
+[run] 1600/3000  last='No'  0.308s
+[run] 1700/3000  last='No'  0.306s
+[run] 1800/3000  last='No'  0.303s
+[run] 1900/3000  last='No'  0.300s
+[run] 2000/3000  last='No'  0.319s
+[run] 2100/3000  last='No'  0.304s
+[run] 2200/3000  last='No'  0.299s
+[run] 2300/3000  last='No'  0.320s
+[run] 2400/3000  last='No'  0.310s
+[run] 2500/3000  last='No'  0.317s
+[run] 2600/3000  last='No'  0.311s
+[run] 2700/3000  last='No'  0.317s
+[run] 2800/3000  last='No'  0.319s
+[run] 2900/3000  last='No'  0.287s
+[run] 3000/3000  last='No'  0.320s
+{"accuracy": 81.1, "precision": 86.25, "recall": 74.0, "f1": 79.66, "yes_ratio": 42.9, "n": 3000} peak_mem=14.878GB mean_lat=0.32915s
+[worker 3] job 10/13: --dataset coco --split random --mode apc --seed 1
+[run] /content/vcd-pope/results/runs/coco_random_apc_s1: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.314s
+[run] 200/3000  last='No'  0.293s
+[run] 300/3000  last='No'  0.276s
+[run] 400/3000  last='No'  0.296s
+[run] 500/3000  last='No'  0.298s
+[run] 600/3000  last='No'  0.304s
+[run] 700/3000  last='No'  0.322s
+[run] 800/3000  last='No'  0.280s
+[run] 900/3000  last='No'  0.294s
+[run] 1000/3000  last='No'  0.306s
+[run] 1100/3000  last='No'  0.300s
+[run] 1200/3000  last='No'  0.286s
+[run] 1300/3000  last='No'  0.288s
+[run] 1400/3000  last='No'  0.308s
+[run] 1500/3000  last='No'  0.297s
+[run] 1600/3000  last='No'  0.300s
+[run] 1700/3000  last='No'  0.296s
+[run] 1800/3000  last='No'  0.307s
+[run] 1900/3000  last='Yes'  0.302s
+[run] 2000/3000  last='Yes'  0.303s
+[run] 2100/3000  last='No'  0.303s
+[run] 2200/3000  last='No'  0.261s
+[run] 2300/3000  last='No'  0.307s
+[run] 2400/3000  last='Yes'  0.289s
+[run] 2500/3000  last='No'  0.234s
+[run] 2600/3000  last='No'  0.271s
+[run] 2700/3000  last='No'  0.306s
+[run] 2800/3000  last='No'  0.307s
+[run] 2900/3000  last='No'  0.325s
+[run] 3000/3000  last='No'  0.310s
+{"accuracy": 84.6, "precision": 94.51, "recall": 73.47, "f1": 82.67, "yes_ratio": 38.87, "n": 3000} peak_mem=14.542GB mean_lat=0.29359s
+[worker 3] job 11/13: --dataset coco --split popular --mode apc --seed 1
+[run] /content/vcd-pope/results/runs/coco_popular_apc_s1: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.307s
+[run] 200/3000  last='No'  0.302s
+[run] 300/3000  last='No'  0.215s
+[run] 400/3000  last='No'  0.206s
+[run] 500/3000  last='No'  0.233s
+[run] 600/3000  last='No'  0.319s
+[run] 700/3000  last='No'  0.289s
+[run] 800/3000  last='No'  0.299s
+[run] 900/3000  last='No'  0.302s
+[run] 1000/3000  last='No'  0.316s
+[run] 1100/3000  last='No'  0.251s
+[run] 1200/3000  last='No'  0.250s
+[run] 1300/3000  last='No'  0.237s
+[run] 1400/3000  last='No'  0.308s
+[run] 1500/3000  last='No'  0.292s
+[run] 1600/3000  last='No'  0.295s
+[run] 1700/3000  last='No'  0.228s
+[run] 1800/3000  last='No'  0.308s
+[run] 1900/3000  last='No'  0.227s
+[run] 2000/3000  last='No'  0.218s
+[run] 2100/3000  last='No'  0.308s
+[run] 2200/3000  last='No'  0.237s
+[run] 2300/3000  last='No'  0.261s
+[run] 2400/3000  last='No'  0.236s
+[run] 2500/3000  last='No'  0.249s
+[run] 2600/3000  last='No'  0.317s
+[run] 2700/3000  last='No'  0.314s
+[run] 2800/3000  last='No'  0.214s
+[run] 2900/3000  last='No'  0.217s
+[run] 3000/3000  last='No'  0.246s
+{"accuracy": 83.13, "precision": 91.07, "recall": 73.47, "f1": 81.33, "yes_ratio": 40.33, "n": 3000} peak_mem=14.542GB mean_lat=0.28975s
+[worker 3] job 12/13: --dataset coco --split adversarial --mode apc --seed 1
+[run] /content/vcd-pope/results/runs/coco_adversarial_apc_s1: 0 done, 3000 to go
+[run] 100/3000  last='No'  0.219s
+[run] 200/3000  last='Yes'  0.235s
+[run] 300/3000  last='No'  0.239s
+[run] 400/3000  last='No'  0.289s
+[run] 500/3000  last='No'  0.248s
+[run] 600/3000  last='No'  0.231s
+[run] 700/3000  last='No'  0.297s
+[run] 800/3000  last='No'  0.310s
+[run] 900/3000  last='No'  0.311s
+[run] 1000/3000  last='No'  0.283s
+[run] 1100/3000  last='No'  0.313s
+[run] 1200/3000  last='No'  0.310s
+[run] 1300/3000  last='No'  0.321s
+[run] 1400/3000  last='Yes'  0.325s
+[run] 1500/3000  last='No'  0.298s
+[run] 1600/3000  last='No'  0.293s
+[run] 1700/3000  last='No'  0.301s
+[run] 1800/3000  last='No'  0.312s
+[run] 1900/3000  last='No'  0.309s
+[run] 2000/3000  last='No'  0.306s
+[run] 2100/3000  last='No'  0.320s
+[run] 2200/3000  last='No'  0.291s
+[run] 2300/3000  last='Yes'  0.240s
+[run] 2400/3000  last='No'  0.319s
+[run] 2500/3000  last='No'  0.298s
+[run] 2600/3000  last='No'  0.297s
+[run] 2700/3000  last='No'  0.297s
+[run] 2800/3000  last='No'  0.314s
+[run] 2900/3000  last='No'  0.285s
+[run] 3000/3000  last='No'  0.284s
+{"accuracy": 80.0, "precision": 84.62, "recall": 73.33, "f1": 78.57, "yes_ratio": 43.33, "n": 3000} peak_mem=14.542GB mean_lat=0.29009s
+[worker 3] job 13/13: --dataset aokvqa --split popular --exclude-images-from data/pope/coco/coco_pope_random.json --mode vcd --gate margin --tau 0.9 --seed 1
+[run] /content/vcd-pope/results/runs/aokvqa_popular_vcd_margin0.9_s1: 0 done, 2934 to go
+[run] 100/2934  last='No'  0.309s
+[run] 200/2934  last='Yes'  0.302s
+[run] 300/2934  last='No'  0.531s
+[run] 400/2934  last='No'  0.542s
+[run] 500/2934  last='No'  0.541s
+[run] 600/2934  last='No'  0.302s
+[run] 700/2934  last='No'  0.541s
+[run] 800/2934  last='Yes'  0.317s
+[run] 900/2934  last='No'  0.311s
+[run] 1000/2934  last='No'  0.540s
+[run] 1100/2934  last='Yes'  0.324s
+[run] 1200/2934  last='No'  0.332s
+[run] 1300/2934  last='No'  0.521s
+[run] 1400/2934  last='Yes'  0.483s
+[run] 1500/2934  last='No'  0.224s
+[run] 1600/2934  last='No'  0.234s
+[run] 1700/2934  last='No'  0.215s
+[run] 1800/2934  last='Yes'  0.378s
+[run] 1900/2934  last='No'  0.388s
+[run] 2000/2934  last='Yes'  0.217s
+[run] 2100/2934  last='No'  0.214s
+[run] 2200/2934  last='No'  0.215s
+[run] 2300/2934  last='Yes'  0.382s
+[run] 2400/2934  last='No'  0.248s
+[run] 2500/2934  last='No'  0.238s
+[run] 2600/2934  last='Yes'  0.144s
+[run] 2700/2934  last='No'  0.260s
+[run] 2800/2934  last='No'  0.140s
+[run] 2900/2934  last='Yes'  0.260s
+{"accuracy": 80.61, "precision": 79.31, "recall": 82.82, "f1": 81.03, "yes_ratio": 52.22, "n": 2934} peak_mem=14.876GB mean_lat=0.33088s

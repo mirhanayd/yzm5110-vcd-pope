@@ -1,0 +1,63 @@
+{
+  "args": {
+    "dataset": "coco",
+    "split": "random",
+    "question_file": null,
+    "image_folder": null,
+    "model_id": "llava-hf/llava-1.5-7b-hf",
+    "dtype": "float16",
+    "load_in_4bit": false,
+    "mode": "vcd",
+    "gate": "random",
+    "tau": 1.0,
+    "skip_prob": 0.9581,
+    "alpha": 1.0,
+    "beta": 0.1,
+    "noise_step": 500,
+    "max_new_tokens": 32,
+    "seed": 1,
+    "limit": 1000,
+    "exclude_images_from": null,
+    "out_dir": "results/timing",
+    "name": null,
+    "warmup": 3
+  },
+  "question_file": "/content/vcd-pope/data/pope/coco/coco_pope_random.json",
+  "n_questions": 1000,
+  "git_revision": "fbb99d6b941a9b643e36bc885b4dd5b7ca5bd6d7",
+  "model_revision": "b234b804b114d9e37bb655e11cbbb5f5e971b7a9",
+  "versions": {
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "transformers": "4.51.3"
+  },
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "peak_memory_gb": 14.878,
+  "wall_time_s_this_session": 120.5,
+  "n_new_this_session": 1000,
+  "mean_latency_s": 0.10154,
+  "median_latency_s": 0.09576,
+  "p90_latency_s": 0.10112,
+  "concurrent_jobs": 1,
+  "noisy_forwards_per_q": 0.089,
+  "noisy_prefills_per_q": 0.088,
+  "skip_rate_steps": 0.9555,
+  "metrics_official": {
+    "accuracy": 84.8,
+    "precision": 95.08,
+    "recall": 73.4,
+    "f1": 82.84,
+    "yes_ratio": 38.6,
+    "n": 1000
+  },
+  "metrics_strict": {
+    "accuracy": 84.8,
+    "precision": 95.08,
+    "recall": 73.4,
+    "f1": 82.84,
+    "yes_ratio": 38.6,
+    "n": 1000,
+    "unparsed": 0.0
+  },
+  "command": "python3 /content/vcd-pope/scripts/run_many.py results/jobs/timing.txt --workers 1 --worker-id 0"
+}

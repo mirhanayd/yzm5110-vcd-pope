@@ -1,0 +1,53 @@
+--dataset coco --split random --mode regular --seed 1
+--dataset coco --split random --mode vcd --seed 1
+--dataset coco --split popular --mode regular --seed 1
+--dataset coco --split popular --mode vcd --seed 1
+--dataset coco --split adversarial --mode regular --seed 1
+--dataset coco --split adversarial --mode vcd --seed 1
+--dataset coco --split random --mode regular --seed 2
+--dataset coco --split random --mode vcd --seed 2
+--dataset coco --split popular --mode regular --seed 2
+--dataset coco --split popular --mode vcd --seed 2
+--dataset coco --split adversarial --mode regular --seed 2
+--dataset coco --split adversarial --mode vcd --seed 2
+--dataset coco --split random --mode regular --seed 3
+--dataset coco --split random --mode vcd --seed 3
+--dataset coco --split popular --mode regular --seed 3
+--dataset coco --split popular --mode vcd --seed 3
+--dataset coco --split adversarial --mode regular --seed 3
+--dataset coco --split adversarial --mode vcd --seed 3
+--dataset coco --split random --mode vcd --gate margin --tau 0.6 --seed 1
+--dataset coco --split random --mode vcd --gate random --skip-prob 0.9581 --seed 1
+--dataset coco --split popular --mode vcd --gate margin --tau 0.6 --seed 1
+--dataset coco --split popular --mode vcd --gate random --skip-prob 0.9581 --seed 1
+--dataset coco --split adversarial --mode vcd --gate margin --tau 0.6 --seed 1
+--dataset coco --split adversarial --mode vcd --gate random --skip-prob 0.9581 --seed 1
+--dataset coco --split random --mode vcd --gate margin --tau 0.6 --seed 2
+--dataset coco --split random --mode vcd --gate random --skip-prob 0.9581 --seed 2
+--dataset coco --split popular --mode vcd --gate margin --tau 0.6 --seed 2
+--dataset coco --split popular --mode vcd --gate random --skip-prob 0.9581 --seed 2
+--dataset coco --split adversarial --mode vcd --gate margin --tau 0.6 --seed 2
+--dataset coco --split adversarial --mode vcd --gate random --skip-prob 0.9581 --seed 2
+--dataset coco --split random --mode vcd --gate margin --tau 0.6 --seed 3
+--dataset coco --split random --mode vcd --gate random --skip-prob 0.9581 --seed 3
+--dataset coco --split popular --mode vcd --gate margin --tau 0.6 --seed 3
+--dataset coco --split popular --mode vcd --gate random --skip-prob 0.9581 --seed 3
+--dataset coco --split adversarial --mode vcd --gate margin --tau 0.6 --seed 3
+--dataset coco --split adversarial --mode vcd --gate random --skip-prob 0.9581 --seed 3
+--dataset coco --split random --mode vcd --gate lossless --seed 1
+--dataset coco --split random --mode greedy --seed 1
+--dataset coco --split random --mode vcd_greedy --seed 1
+--dataset coco --split random --mode apc --seed 1
+--dataset coco --split popular --mode vcd --gate lossless --seed 1
+--dataset coco --split popular --mode greedy --seed 1
+--dataset coco --split popular --mode vcd_greedy --seed 1
+--dataset coco --split popular --mode apc --seed 1
+--dataset coco --split adversarial --mode vcd --gate lossless --seed 1
+--dataset coco --split adversarial --mode greedy --seed 1
+--dataset coco --split adversarial --mode vcd_greedy --seed 1
+--dataset coco --split adversarial --mode apc --seed 1
+--dataset aokvqa --split popular --exclude-images-from data/pope/coco/coco_pope_random.json --mode vcd --seed 1
+--dataset aokvqa --split popular --exclude-images-from data/pope/coco/coco_pope_random.json --mode vcd --gate margin --tau 0.6 --seed 1
+--dataset aokvqa --split popular --exclude-images-from data/pope/coco/coco_pope_random.json --mode vcd --gate margin --tau 0.8 --seed 1
+--dataset aokvqa --split popular --exclude-images-from data/pope/coco/coco_pope_random.json --mode vcd --gate margin --tau 0.9 --seed 1
+--dataset aokvqa --split popular --exclude-images-from data/pope/coco/coco_pope_random.json --mode vcd --gate margin --tau 0.95 --seed 1
