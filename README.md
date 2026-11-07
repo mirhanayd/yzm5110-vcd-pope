@@ -95,7 +95,3 @@ Every run directory contains `answers.jsonl` (answer, latency, forward-pass coun
 ## Licenses and attribution
 
 Our code is MIT-licensed (`LICENSE`). `src/vcdpope/noise.py` is adapted from the official VCD repository (Apache-2.0, `third_party/VCD_LICENSE`). POPE question files (`data/pope/`) are copied from the VCD repository at commit `d6568ff` (Apache-2.0); they are the POPE splits of Li et al., EMNLP 2023. COCO images are subject to the [COCO terms of use](https://cocodataset.org/#termsofuse) and are not redistributed here. LLaVA-1.5 weights are subject to their own license (Llama 2 community license).
-
-## AI assistance
-
-Disclosed per the course policy: Claude (Anthropic) was used to help with code scaffolding, the analysis of the official implementation, and editing. All experiments were run and checked by the author. See the report for details.
