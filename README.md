@@ -15,6 +15,23 @@ p_vcd(y) = softmax( (1+α)·logit(y|v,x) − α·logit(y|v',x) )   restricted to
 1. **Reproduction.** Does VCD improve POPE accuracy/F1 over regular decoding for LLaVA-1.5-7B on MSCOCO (paper: Table 1)? We also check how much of the gain is explained by two simpler effects reported by later work ([Yin et al., NeurIPS 2025](https://arxiv.org/abs/2504.10020)): the adaptive plausibility constraint (APC) alone, and greedy decoding. We also track the "yes" ratio.
 2. **Improvement: cost.** VCD needs a second forward pass with the noisy image (including a second ~600-token prefill) for every generated token. When the APC keeps only one candidate token, the output is the clean argmax whatever the noisy logits are. In that case the noisy pass is redundant and can be skipped **without changing the output**. We measure how often this happens. We also measure the accuracy/cost trade-off of a lossy version that skips when the clean top-token probability is ≥ τ (τ tuned on a separate dev split). A random gate at the same skip rate serves as a control.
 
+## Results in brief
+
+| | Random F1 | Popular F1 | Adversarial F1 |
+|---|---|---|---|
+| Paper, VCD (Table 1) | 87.16 | 85.06 | 81.33 |
+| Ours, regular decoding (3 seeds) | 81.16 | 79.85 | 77.43 |
+| Ours, VCD T=500 (official script value, 3 seeds) | 83.26 | 81.78 | 79.16 |
+| Ours, VCD T=999 (paper value, 1 seed) | 87.12 | 85.13 | 81.43 |
+| Ours, greedy + constant yes-shift (offline control) | 89.03 | 86.94 | 83.12 |
+
+* VCD reproduces within 0.12 F1 at the paper's noise level T=999; at T=500 the gain is about a third.
+* A constant logit shift toward "Yes" on greedy decoding, matched to VCD's yes-ratio, beats VCD on every split (`scripts/yes_shift_control.py`).
+* The lossless gate gives identical answers to VCD on all 9,000 test questions and cuts latency from 191 ms to 115 ms per question (regular decoding: 95 ms) on an A100.
+* The lossy gate (tau=0.6, tuned on A-OKVQA dev) does no better than a random gate at the same skip rate.
+
+Full tables: `results/tables/`. Report: `Aydinli_YZM5110_Research.pdf`.
+
 ## Repository layout
 
 ```
@@ -27,6 +44,7 @@ scripts/experiments.sh    the exact commands of every reported run (phases: smok
 scripts/run_many.py       runs a job list with N workers sharing one GPU, loading the model once per worker
 scripts/pick_tau.py       chooses the gate threshold on the dev split only
 scripts/make_tables.py    builds results/tables/*.md|csv from the saved runs
+scripts/yes_shift_control.py  offline yes-shift control from saved first-step logits (no GPU)
 scripts/check_tokenizer.py  verifies our prompt token ids == original LLaVA tokenizer ids
 tests/                    CPU tests with a tiny random LLaVA (exactness of the lossless gate, KV-cache catch-up)
 notebooks/colab_run.ipynb Colab runner (GPU)
@@ -68,7 +86,7 @@ Every run directory contains `answers.jsonl` (answer, latency, forward-pass coun
 | Image preprocessing | CLIP resize 336 + center crop, noise added after normalization | same | none expected |
 | Decoding loop | monkey-patched HF `sample()` | own loop, same formula and APC (log-space cutoff, as in code) | equal in exact arithmetic |
 | β | paper: 0.1; `llava1.5_pope.bash`: 0.2 | 0.1 | follows the paper |
-| noise step T | code default 500; paper defers to the supplement | 500 | sensitivity can be checked with `--noise-step` |
+| noise step T | paper appendix: 999 for POPE; official POPE script: 500 | 500 in the main runs, 999 in a follow-up (`experiments.sh t999`) | explains the gap to the paper (see Results) |
 | runs | 5 runs, mean ± std | 3 seeds (compute budget) | wider uncertainty |
 | seeding | one global seed per run | seed per (run seed, question id) | resumable runs, paired comparisons across modes |
 | max new tokens | 1024 | 32 (answers are one word, then EOS) | none expected on POPE |
