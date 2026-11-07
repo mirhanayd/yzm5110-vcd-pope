@@ -50,6 +50,16 @@ all)
   } > results/jobs/timing.txt
   python scripts/run_many.py results/jobs/timing.txt --workers 1
   ;;
+t999)
+  # Follow-up after the main runs: the paper (Appendix A) states T=999 for POPE, while the official
+  # POPE script defaults to T=500 (used above). Our Regular and greedy baselines match the paper, but
+  # VCD does not, so we test the paper's noise level on all splits (seed 1).
+  {
+    for sp in $SPLITS; do echo "--dataset coco --split $sp --mode vcd --noise-step 999 --seed 1"; done
+    echo "--dataset coco --split random --mode vcd_greedy --noise-step 999 --seed 1"
+  } > results/jobs/t999.txt
+  python scripts/run_many.py results/jobs/t999.txt --workers "$WORKERS"
+  ;;
 smoke)
   {
     echo "--dataset coco --split random --mode regular --limit 100"
@@ -106,5 +116,5 @@ tables)
   python scripts/make_tables.py
   python scripts/make_tables.py --runs-dir results/timing --prefix timing_
   ;;
-*) echo "usage: $0 all|smoke|phase1|phase2|tables"; exit 1;;
+*) echo "usage: $0 all|t999|smoke|phase1|phase2|tables"; exit 1;;
 esac
