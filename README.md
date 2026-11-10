@@ -45,6 +45,8 @@ scripts/run_many.py       runs a job list with N workers sharing one GPU, loadin
 scripts/pick_tau.py       chooses the gate threshold on the dev split only
 scripts/make_tables.py    builds results/tables/*.md|csv from the saved runs
 scripts/yes_shift_control.py  offline yes-shift control from saved first-step logits (no GPU)
+scripts/failure_examples.py   questions VCD consistently breaks or fixes (no GPU)
+scripts/make_figures.py       Figures 1 and 2 of the report (no GPU)
 scripts/check_tokenizer.py  verifies our prompt token ids == original LLaVA tokenizer ids
 tests/                    CPU tests with a tiny random LLaVA (exactness of the lossless gate, KV-cache catch-up)
 notebooks/colab_run.ipynb Colab runner (GPU)
@@ -65,13 +67,21 @@ On Colab, open `notebooks/colab_run.ipynb`.
 
 ## Reproducing the reported numbers
 
+The reported results come from exactly these commands (GPU: one A100 80 GB on Colab Pro; `notebooks/colab_run.ipynb` runs them):
+
 ```bash
-bash scripts/experiments.sh smoke     # 100 questions x 3 configs, checks the pipeline
-bash scripts/experiments.sh phase1    # dev gate tuning (A-OKVQA POPE, images disjoint from COCO), then
-                                      # COCO random|popular|adversarial: Regular / VCD / APC-only x 3 seeds, greedy / VCD-greedy
-TAU=... SKIP=... bash scripts/experiments.sh phase2   # lossless / margin / random gate on COCO x 3 seeds + timing runs alone on the GPU
-bash scripts/experiments.sh tables
+TAU=0.6 SKIP=0.9581 WORKERS=4 bash scripts/experiments.sh all   # 53 accuracy runs + 5 timing runs, ~4.8 A100 hours
+WORKERS=4 bash scripts/experiments.sh t999                      # follow-up: VCD with the paper's noise step T=999 (4 runs)
+bash scripts/experiments.sh tables                              # CPU only: every table and figure from the saved outputs
 ```
+
+`TAU` and `SKIP` were chosen on the dev split (A-OKVQA POPE, images disjoint from COCO) by `scripts/pick_tau.py` in an earlier session whose run files were lost; its console output is in `results/notes/`. The `all` phase re-runs the dev split with seed 1 so the choice can be checked. The older `phase1` / `phase2` phases split the same jobs over two sessions.
+
+**Without a large GPU:** `python -m pytest -q tests` (CPU, ~1 min) checks the lossless gate on a tiny random LLaVA, and `bash scripts/experiments.sh smoke` (100 questions x 3 decoders, a few minutes on any 16 GB GPU) checks the full pipeline. Everything else needs the 7B model in fp16 (~15 GB GPU memory) and about 5 A100 hours.
+
+**Tested versions:** Python 3.13.16, transformers 4.51.3, torch 2.11.0+cu130 (main runs) and 2.14.1+cu130 (T=999 runs), NVIDIA A100-SXM4-80GB. Each run's `meta.json` records the exact versions, git revision and model revision (`llava-hf/llava-1.5-7b-hf` @ `b234b80`). Commit hashes recorded before a message-only history rewrite are mapped in `results/notes/commit_hash_map.txt`.
+
+**Outputs used in the report:** `results/runs/` (accuracy), `results/timing/` (latency, memory), `results/tables/` (all tables, incl. `yes_shift.md` and `failure_examples.md`), `results/figures/` (Figures 1 and 2), `results/logs_archive/` (worker logs and job lists).
 
 Accuracy runs use 4 models in parallel on one A100-80GB (`WORKERS=4`); their latencies are not used. Latency and memory are reported only from `results/timing/`, where one model runs alone on the GPU after untimed warm-up.
 

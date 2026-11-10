@@ -7,5 +7,6 @@ protobuf
 pillow
 numpy
 pytest
+matplotlib
 # optional, only for --load-in-4bit:
 # bitsandbytes>=0.43

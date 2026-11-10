@@ -115,6 +115,8 @@ phase2)
 tables)
   python scripts/make_tables.py
   python scripts/yes_shift_control.py
+  python scripts/failure_examples.py
+  python scripts/make_figures.py
   python scripts/make_tables.py --runs-dir results/timing --prefix timing_
   ;;
 *) echo "usage: $0 all|t999|smoke|phase1|phase2|tables"; exit 1;;
