@@ -60,6 +60,17 @@ t999)
   } > results/jobs/t999.txt
   python scripts/run_many.py results/jobs/t999.txt --workers "$WORKERS"
   ;;
+t999b)
+  # Optional second follow-up (one round of 4 jobs, ~30 min on an A100): VCD greedy at T=999 on the
+  # other two splits (fair test against plain greedy) and a second seed of VCD T=999 where it matters.
+  {
+    echo "--dataset coco --split popular --mode vcd_greedy --noise-step 999 --seed 1"
+    echo "--dataset coco --split adversarial --mode vcd_greedy --noise-step 999 --seed 1"
+    echo "--dataset coco --split random --mode vcd --noise-step 999 --seed 2"
+    echo "--dataset coco --split adversarial --mode vcd --noise-step 999 --seed 2"
+  } > results/jobs/t999b.txt
+  python scripts/run_many.py results/jobs/t999b.txt --workers "$WORKERS"
+  ;;
 smoke)
   {
     echo "--dataset coco --split random --mode regular --limit 100"
@@ -119,5 +130,5 @@ tables)
   python scripts/make_figures.py
   python scripts/make_tables.py --runs-dir results/timing --prefix timing_
   ;;
-*) echo "usage: $0 all|t999|smoke|phase1|phase2|tables"; exit 1;;
+*) echo "usage: $0 all|t999|t999b|smoke|phase1|phase2|tables"; exit 1;;
 esac
