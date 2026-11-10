@@ -7,6 +7,8 @@ Adding a bias b to logit(Yes) - logit(No) shifts answers one way, toward "yes". 
 pick b so that the yes-ratio matches a VCD run, then compare F1. This is a diagnostic in the spirit
 of Yin et al. (2025): it uses the yes-ratio of the VCD run on the test split (not the labels), so it
 is not a deployable method, but it shows how much of the VCD gain a one-way shift alone explains.
+A second row per split tunes b on the dev split's labels instead (no test information); there the
+best b is about 0 and greedy+b loses to VCD (T=999) on two of three splits.
 
     python scripts/yes_shift_control.py      # writes results/tables/yes_shift.md|csv
 """
@@ -39,8 +41,18 @@ def metrics(pred, labels):
                 f1=100 * 2 * P * R / (P + R), yes=100 * (tp + fp) / len(labels))
 
 
+def dev_tuned_bias():
+    """Best F1 bias on the dev split (A-OKVQA POPE, popular, COCO images removed), using its labels.
+    Clean first-step logits are the same in every decoder, so the VCD dev run provides them."""
+    d = load("aokvqa_popular_vcd_s1")
+    labels = [r["label"] for r in d]
+    margin = [r["first"]["clean_logit_yes"] - r["first"]["clean_logit_no"] for r in d]
+    return max(range(-300, 601), key=lambda k: metrics([m + k / 100 > 0 for m in margin], labels)["f1"]) / 100
+
+
 def main():
     rows = []
+    b_dev = dev_tuned_bias()
     for sp in ("random", "popular", "adversarial"):
         g = load(f"coco_{sp}_greedy_s1")
         labels = [r["label"] for r in g]
@@ -62,6 +74,11 @@ def main():
             s = metrics([m + b > 0 for m in margin], labels)
             rows.append([sp, name, round(t["yes"], 2), round(t["f1"], 2), b, round(s["yes"], 2), round(s["f1"], 2),
                          round(s["f1"] - t["f1"], 2), round(s["accuracy"] - t["accuracy"], 2)])
+            if "T=999, sampling" in name:  # same comparison with b tuned on dev labels (no test information)
+                s = metrics([m + b_dev > 0 for m in margin], labels)
+                rows.append([sp, name + " vs greedy+b tuned on dev", round(t["yes"], 2), round(t["f1"], 2), b_dev,
+                             round(s["yes"], 2), round(s["f1"], 2), round(s["f1"] - t["f1"], 2),
+                             round(s["accuracy"] - t["accuracy"], 2)])
     header = ["split", "matched VCD run", "VCD yes %", "VCD F1", "bias b", "greedy+b yes %", "greedy+b F1",
               "F1 difference (greedy+b minus VCD)", "accuracy difference"]
     os.makedirs(OUT, exist_ok=True)

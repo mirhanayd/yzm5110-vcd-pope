@@ -23,10 +23,11 @@ p_vcd(y) = softmax( (1+α)·logit(y|v,x) − α·logit(y|v',x) )   restricted to
 | Ours, regular decoding (3 seeds) | 81.16 | 79.85 | 77.43 |
 | Ours, VCD T=500 (official script value, 3 seeds) | 83.26 | 81.78 | 79.16 |
 | Ours, VCD T=999 (paper value, 1 seed) | 87.12 | 85.13 | 81.43 |
-| Ours, greedy + constant yes-shift (offline control) | 89.03 | 86.94 | 83.12 |
+| Ours, greedy + yes-shift matched to VCD's yes-ratio (offline diagnostic) | 89.03 | 86.94 | 83.12 |
+| Ours, greedy + yes-shift tuned on dev labels (b = 0.01) | 85.55 | 84.42 | 82.17 |
 
 * VCD reproduces within 0.12 F1 at the paper's noise level T=999; at T=500 the gain is about a third.
-* A constant logit shift toward "Yes" on greedy decoding, matched to VCD's yes-ratio, beats VCD on every split (`scripts/yes_shift_control.py`).
+* A constant logit shift toward "Yes" on greedy decoding, matched to VCD's yes-ratio, beats VCD on every split; tuned on held-out dev labels instead, the shift is about 0 and loses on 2 of 3 splits (`scripts/yes_shift_control.py`).
 * The lossless gate gives identical answers to VCD on all 9,000 test questions and cuts latency from 191 ms to 115 ms per question (regular decoding: 95 ms) on an A100.
 * The lossy gate (tau=0.6, tuned on A-OKVQA dev) does no better than a random gate at the same skip rate.
 
