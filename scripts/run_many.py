@@ -43,6 +43,17 @@ def main():
         worker(jobs, a.worker_id, a.workers)
         return
     os.makedirs(os.path.join(ROOT, "results", "logs"), exist_ok=True)
+    # Each fp16 LLaVA-1.5-7B worker needs ~15 GB; cap the worker count to what the GPU can hold
+    # (asked via nvidia-smi so this parent process does not create a CUDA context of its own).
+    try:
+        total_gb = int(subprocess.check_output(["nvidia-smi", "--query-gpu=memory.total", "--format=csv,noheader,nounits"],
+                                               text=True).split()[0]) / 1024
+        fit = max(1, int(total_gb // 17))
+        if a.workers > fit:
+            print(f"GPU has {total_gb:.0f} GB: running {fit} worker(s) instead of {a.workers}", flush=True)
+            a.workers = fit
+    except Exception:
+        pass
     env = dict(os.environ, VCDPOPE_CONCURRENT=str(a.workers))
     tag = os.path.splitext(os.path.basename(a.jobs_file))[0]
     procs = []
