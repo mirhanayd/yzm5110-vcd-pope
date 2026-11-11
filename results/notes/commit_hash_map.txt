@@ -1,12 +1,12 @@
-# Commit hashes recorded in results/*/meta.json (git_revision) were created before a history
-# rewrite on 2026-11-07 that only edited commit-message trailers (file trees are identical).
+# Commit hashes recorded in results/*/meta.json (git_revision) were created before two history
+# rewrites (2026-11-07 and 2026-11-12) that only edited commit messages/author metadata (file trees are identical).
 # old_hash new_hash subject
-788f8b2 da23788 results: clean timing runs (1 model on GPU, 1000 q) and run logs
-2e2d60a 482d7ec results: main runs (56) and tables; add T=999 follow-up phase
-813019e 05b60d5 fix: tolerate truncated answer lines when resuming after a killed runtime
-fbb99d6 85b7460 fix(notebook): link outputs to Drive in Python and assert it; add single-session 'all' schedule
-db4624d 4b17978 fix(notebook): flush Drive before releasing the runtime
-224b6c4 c29e3bb fix(notebook): keep results/tables on Drive so tables survive runtime shutdown
-c86093e c86093e perf: reuse loaded model across runs, add multi-worker launcher and timing phase
-1613fe3 1613fe3 feat: add VCD reproduction pipeline for LLaVA-1.5 on POPE
+788f8b2 9652012 results: clean timing runs (1 model on GPU, 1000 q) and run logs
+2e2d60a b3cd48a results: main runs (56) and tables; add T=999 follow-up phase
+813019e 58dd06a fix: tolerate truncated answer lines when resuming after a killed runtime
+fbb99d6 5db7057 fix(notebook): link outputs to Drive in Python and assert it; add single-session 'all' schedule
+db4624d 246ce51 fix(notebook): flush Drive before releasing the runtime
+224b6c4 4c9e47f fix(notebook): keep results/tables on Drive so tables survive runtime shutdown
+c86093e 13d1e42 perf: reuse loaded model across runs, add multi-worker launcher and timing phase
+1613fe3 cdd1211 feat: add VCD reproduction pipeline for LLaVA-1.5 on POPE
 1b2f178 1b2f178 Initial commit
