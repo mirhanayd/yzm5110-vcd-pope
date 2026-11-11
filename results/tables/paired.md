@@ -1,6 +1,11 @@
 | run | baseline | fixed (label yes) | fixed (label no) | broken (label yes) | broken (label no) | McNemar p |
 |---|---|---|---|---|---|---|
 | coco_adversarial_apc_s1 | coco_adversarial_regular_s1 | 23 | 28 | 7 | 0 | 2.4e-09 |
+| coco_adversarial_vcd_a1_T999_s1 | coco_adversarial_regular_s1 | 182 | 37 | 14 | 132 | 0.00016 |
+| coco_adversarial_vcd_a1_T999_s1 | coco_adversarial_apc_s1 | 159 | 9 | 7 | 132 | 0.11 |
+| coco_adversarial_vcd_a1_T999_s2 | coco_adversarial_regular_s2 | 193 | 31 | 8 | 140 | 9.6e-05 |
+| coco_adversarial_vcd_a1_T999_s2 | coco_adversarial_apc_s1 | 186 | 46 | 24 | 171 | 0.081 |
+| coco_adversarial_vcd_greedy_a1_T999_s1 | coco_adversarial_greedy_s1 | 136 | 4 | 9 | 190 | 0.0016 |
 | coco_adversarial_vcd_greedy_s1 | coco_adversarial_greedy_s1 | 60 | 24 | 31 | 86 | 0.024 |
 | coco_adversarial_vcd_s1 | coco_adversarial_regular_s1 | 80 | 53 | 31 | 60 | 0.006 |
 | coco_adversarial_vcd_s1 | coco_adversarial_apc_s1 | 57 | 25 | 24 | 60 | 0.94 |
@@ -9,6 +14,9 @@
 | coco_adversarial_vcd_s3 | coco_adversarial_regular_s3 | 77 | 35 | 23 | 65 | 0.1 |
 | coco_adversarial_vcd_s3 | coco_adversarial_apc_s1 | 137 | 85 | 97 | 111 | 0.53 |
 | coco_popular_apc_s1 | coco_popular_regular_s1 | 23 | 28 | 7 | 1 | 9.1e-09 |
+| coco_popular_vcd_a1_T999_s1 | coco_popular_regular_s1 | 179 | 31 | 14 | 84 | 1.6e-10 |
+| coco_popular_vcd_a1_T999_s1 | coco_popular_apc_s1 | 156 | 3 | 7 | 83 | 1.5e-05 |
+| coco_popular_vcd_greedy_a1_T999_s1 | coco_popular_greedy_s1 | 135 | 1 | 9 | 120 | 0.71 |
 | coco_popular_vcd_greedy_s1 | coco_popular_greedy_s1 | 60 | 8 | 32 | 65 | 0.029 |
 | coco_popular_vcd_s1 | coco_popular_regular_s1 | 79 | 40 | 31 | 49 | 0.0069 |
 | coco_popular_vcd_s1 | coco_popular_apc_s1 | 56 | 12 | 24 | 48 | 0.8 |
@@ -17,6 +25,11 @@
 | coco_popular_vcd_s3 | coco_popular_regular_s3 | 77 | 31 | 24 | 49 | 0.011 |
 | coco_popular_vcd_s3 | coco_popular_apc_s1 | 136 | 45 | 98 | 75 | 0.71 |
 | coco_random_apc_s1 | coco_random_regular_s1 | 23 | 27 | 7 | 1 | 1.6e-08 |
+| coco_random_vcd_a1_T999_s1 | coco_random_regular_s1 | 179 | 28 | 14 | 59 | 5.1e-16 |
+| coco_random_vcd_a1_T999_s1 | coco_random_apc_s1 | 156 | 1 | 7 | 58 | 5.8e-10 |
+| coco_random_vcd_a1_T999_s2 | coco_random_regular_s2 | 191 | 27 | 8 | 77 | 1.3e-14 |
+| coco_random_vcd_a1_T999_s2 | coco_random_apc_s1 | 185 | 16 | 24 | 86 | 2.8e-07 |
+| coco_random_vcd_greedy_a1_T999_s1 | coco_random_greedy_s1 | 135 | 2 | 9 | 83 | 0.0036 |
 | coco_random_vcd_greedy_s1 | coco_random_greedy_s1 | 60 | 3 | 32 | 33 | 0.93 |
 | coco_random_vcd_s1 | coco_random_regular_s1 | 79 | 30 | 31 | 29 | 0.0002 |
 | coco_random_vcd_s1 | coco_random_apc_s1 | 56 | 3 | 24 | 28 | 0.57 |

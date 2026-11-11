@@ -163,7 +163,8 @@ def main():
     pairs = [("vcd", "regular"), ("vcd_greedy", "greedy"), ("apc", "regular"), ("vcd", "apc")]
     for r in runs:
         for new, old in pairs:
-            mm = re.match(rf"(.+)_{new}$", r["config"])
+            # the optional suffix covers runs at a non-default alpha / noise step (e.g. _a1_T999)
+            mm = re.match(rf"(.+)_{new}(?:_a[\d.]+_T\d+)?$", r["config"])
             if not mm:
                 continue
             base = by_key.get((f"{mm.group(1)}_{old}", r["seed"])) or by_key.get((f"{mm.group(1)}_{old}", 1))
