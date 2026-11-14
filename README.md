@@ -14,9 +14,9 @@ p_vcd(y) = softmax( (1+α)·logit(y|v,x) − α·logit(y|v',x) )   restricted to
 
 This repository asks two things.
 
-**1. Does the gain reproduce?** The paper reports that VCD beats regular decoding on POPE (Table 1, LLaVA-1.5-7B on MSCOCO). I rerun that comparison. Two simpler effects could explain part of the gain ([Yin et al., 2025](https://arxiv.org/abs/2504.10020)). One is the adaptive plausibility constraint (APC) on its own. The other is greedy decoding. Both get a control run. The "yes" ratio is tracked too.
+**1. Does the gain reproduce?** The paper reports that VCD beats regular decoding on POPE (Table 1, LLaVA-1.5-7B on MSCOCO). I rerun that comparison. Two simpler effects could explain part of the gain ([Yin et al., 2025](https://arxiv.org/abs/2504.10020)): the adaptive plausibility constraint (APC) on its own, and greedy decoding. Each gets a control run, and I also track the "yes" ratio.
 
-**2. Can VCD be cheaper?** VCD runs a second forward pass on the noisy image for every token. That pass includes a second prefill of about 600 tokens. Sometimes the APC keeps a single candidate token. Then the output is the clean argmax and the noisy logits cannot change it. Skipping the noisy pass in that case is lossless. I measure how often it happens. A lossy variant skips whenever the clean top-token probability reaches τ. The threshold τ was tuned on a separate dev split. A random gate at the same skip rate is the control.
+**2. Can VCD be cheaper?** VCD runs a second forward pass on the noisy image for every token, including a second prefill of about 600 tokens. When the APC keeps a single candidate token, the output is the clean argmax and the noisy logits cannot change it, so skipping the noisy pass there is lossless. I measure how often that happens. A lossy variant skips whenever the clean top-token probability reaches τ, with τ tuned on a separate dev split; its control is a random gate at the same skip rate.
 
 ## Results in brief
 
@@ -55,7 +55,7 @@ scripts/make_tables.py    builds results/tables/*.md|csv from the saved runs
 scripts/yes_shift_control.py  offline yes-shift control from saved first-step logits (no GPU)
 scripts/failure_examples.py   questions VCD consistently breaks or fixes (no GPU)
 scripts/make_figures.py       Figures 1 and 2 of the report (no GPU)
-scripts/check_tokenizer.py  verifies our prompt token ids == original LLaVA tokenizer ids
+scripts/check_tokenizer.py  verifies the prompt token ids == original LLaVA tokenizer ids
 tests/                    CPU tests with a tiny random LLaVA (exactness of the lossless gate, KV-cache catch-up)
 notebooks/colab_run.ipynb Colab runner (GPU)
 results/runs, results/tables  saved outputs used in the report
@@ -83,17 +83,17 @@ bash scripts/experiments.sh t999b                               # second follow-
 bash scripts/experiments.sh tables                              # CPU only: every table and figure from the saved outputs
 ```
 
-`TAU` and `SKIP` come from the dev split (A-OKVQA POPE, images disjoint from COCO). `scripts/pick_tau.py` chose them in an earlier session. The run files of that session were lost. Its console output is kept in `results/notes/`. The `all` phase reruns the dev split with seed 1, so the choice can be checked.
+`TAU` and `SKIP` come from the dev split (A-OKVQA POPE, images disjoint from COCO). `scripts/pick_tau.py` chose them in an earlier session whose run files were lost; its console output is kept in `results/notes/`. The `all` phase reruns the dev split with seed 1, so the choice can be checked.
 
-**No large GPU?** The CPU tests (`python -m pytest -q tests`) check the lossless gate on a tiny random LLaVA. They take about a minute. The smoke phase (`bash scripts/experiments.sh smoke`) checks the full pipeline on 100 questions with 3 decoders. It needs a 16 GB GPU and a few minutes. Everything else needs the 7B model in fp16 and about 5 A100 hours.
+**No large GPU?** The CPU tests (`python -m pytest -q tests`) check the lossless gate on a tiny random LLaVA in about a minute. The smoke phase (`bash scripts/experiments.sh smoke`) checks the full pipeline on 100 questions with 3 decoders; it needs a 16 GB GPU and a few minutes. Everything else needs the 7B model in fp16 and about 5 A100 hours.
 
-**Tested versions.** I used Python 3.13.16 and transformers 4.51.3 in every run. The main runs had torch 2.11.0+cu130 on an A100-SXM4-80GB. Colab had moved to torch 2.14.1+cu130 by the time of the T=999 runs. Of those, I ran `t999` on an A100 and `t999b` on an L4. Each `meta.json` records the library versions next to the git revision and the model revision (`llava-hf/llava-1.5-7b-hf` @ `b234b80`). The `t999b` runs record the revision as `0a175eb-dirty`: the Colab working copy had uncommitted changes. Some hashes were recorded before a message-only history rewrite. `results/notes/commit_hash_map.txt` maps them to the current ones.
+**Tested versions.** I used Python 3.13.16 and transformers 4.51.3 in every run. The main runs had torch 2.11.0+cu130 on an A100-SXM4-80GB. By the T=999 runs Colab had moved to torch 2.14.1+cu130; `t999` ran on an A100 and `t999b` on an L4. Each `meta.json` records the library versions next to the git revision and the model revision (`llava-hf/llava-1.5-7b-hf` @ `b234b80`). The `t999b` runs record the revision as `0a175eb-dirty`: the Colab working copy had uncommitted changes. Some hashes were recorded before a message-only history rewrite. `results/notes/commit_hash_map.txt` maps them to the current ones.
 
-**Outputs used in the report.** I keep the accuracy runs in `results/runs/`. Latency and memory runs sit apart in `results/timing/`. Every table is under `results/tables/`, including `yes_shift.md` and `failure_examples.md`. Figures 1 and 2 are in `results/figures/`. I archived worker logs and job lists in `results/logs_archive/`.
+**Outputs used in the report.** Accuracy runs are in `results/runs/`, latency and memory runs in `results/timing/`. All tables, including `yes_shift.md` and `failure_examples.md`, are under `results/tables/`. Figures 1 and 2 are in `results/figures/`, and worker logs and job lists are archived in `results/logs_archive/`.
 
-Accuracy runs on the A100 used 4 models in parallel (`WORKERS=4`). Their latencies are not used. Latency and memory come from `results/timing/` alone. There, one model runs by itself on the GPU after an untimed warm-up.
+Accuracy runs on the A100 ran 4 models in parallel (`WORKERS=4`), so their latencies are not used. Latency and memory come only from `results/timing/`, where one model runs alone on the GPU after an untimed warm-up.
 
-Every run directory has two files. The first is `answers.jsonl`, with one line for each of the 3,000 questions. For each one I save the answer and its latency. Forward-pass counts and first-step logits are there too. The second is `meta.json`. I wrote the arguments and revisions into it, next to the library versions and the GPU. It also holds peak memory and wall time. The metrics are there as well.
+Each run directory has two files. `answers.jsonl` has one line per question (3,000 in total) with the answer, its latency, forward-pass counts and first-step logits. `meta.json` holds the arguments, git and model revisions, library versions, GPU, peak memory, wall time and metrics.
 
 ## Known differences from the original setup
 
@@ -108,7 +108,7 @@ Every run directory has two files. The first is `answers.jsonl`, with one line f
 | runs | 5 runs, mean ± std | 3 seeds (compute budget) | wider uncertainty |
 | seeding | one global seed per run | seed per (run seed, question id) | resumable runs, paired comparisons across modes |
 | max new tokens | 1024 | 32 (answers are one word, then EOS) | none expected on POPE |
-| vocabulary | 32000 | HF port pads the LM head to 32064; we use the first 32000 logits | none |
+| vocabulary | 32000 | HF port pads the LM head to 32064; only the first 32000 logits are used | none |
 
 ## Licenses and attribution
 
