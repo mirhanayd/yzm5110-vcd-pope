@@ -38,11 +38,13 @@ This repository asks two things.
 * The lossless gate returns the same answers as VCD on all 9,000 test questions. I measured 191 ms per question for VCD on an A100 and 115 ms with the gate. Regular decoding takes 95 ms.
 * The lossy gate (τ = 0.6, tuned on A-OKVQA dev) does no better than a random gate at the same skip rate.
 
-Full tables are in `results/tables/`. The report is `Aydinli_YZM5110_Research.pdf`.
+Full tables are in `results/tables/`. The report is `Aydinli_YZM5110_Research.pdf`. My class slides are in `Aydinli_YZM5110_Presentation.pdf`.
 
 ## Repository layout
 
 ```
+Aydinli_YZM5110_Research.pdf      the report
+Aydinli_YZM5110_Presentation.pdf  the 7 slides of the class presentation
 src/vcdpope/noise.py      diffusion noise for v' (adapted from official VCD code, Apache-2.0)
 src/vcdpope/model.py      LLaVA-1.5 (HF port) loading; prompt + tokenization identical to the official eval script
 src/vcdpope/decoding.py   token-by-token decoding: regular, greedy, VCD, APC-only, gated VCD
